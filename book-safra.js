@@ -4,6 +4,7 @@ const datefn = require('date-fns')
 const puppeteer = require('puppeteer-extra')
 const StealthPlugin = require('puppeteer-extra-plugin-stealth')
 const CREDS = require('./creds');
+const CONFIG = require('./configurations/safra');
 
 // TODO: Move these constants to new file "const.js"
 // dom element selectors
@@ -46,7 +47,7 @@ async function run() {
     // Page 2: Booking Badminton Courts
     await page.goto('https://mysafra.safra.sg/web/modules/BookingCalendar2/FacilityBookingSearch.aspx?ID=c6nEfGCq%2fR5CD94dd1GGK7sHZ%2fSyelV9A7BeRWD56FYmhJ%2fOy27f%2fw%3d%3d&TYPE=6qcJUPfjf6uL9fvUM2P6EU6zuO3eTG4rSVUGze9uZDOCsB73iL%2fsgiM2nihPlVjv%2fte9Ye%2fkH2aGF0jD8MVpug%3d%3d&')
     
-    await page.select(FACILITY_SELECTOR, BADMINTON_TAMPINES_OPTION);
+    await page.select(FACILITY_SELECTOR, CONFIG.TAMPINES);
     await page.waitForTimeout(2000)
     await page.$eval(DATE_SELECTOR, (el, TARGET_DATE) => el.value = TARGET_DATE, TARGET_DATE);
     await page.click(SEARCH_AVAILABILITY_SELECTOR);
