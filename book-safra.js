@@ -14,14 +14,16 @@ const BUTTON_SELECTOR = '#ctl00_Main_login_Login';
 
 // Facility booking page's selectors
 const FACILITY_SELECTOR = '#FacilityType_c1'
-const BADMINTON_TAMPINES_OPTION = 'c247fcd2-6328-4edd-a989-e494cffbd208'
 const DATE_SELECTOR ='#DateTimeRange_c1_tb'
 const SEARCH_AVAILABILITY_SELECTOR = '#SearchDateRange_bt'
 
 const TARGET_DATE = datefn.format(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), 'dd-MMM-yyyy')
 // Follow this syntax properly to find the time slots in the HTML
 const TIMESLOTS = [
-  '9:00 AM-10:00 AM',
+  '5:00 PM-6:00 PM',
+  '6:00 PM-7:00 PM',
+  '7:00 PM-8:00 PM',
+  '8:00 PM-9:00 PM',
 ]
 
 puppeteer.use(StealthPlugin())
@@ -47,7 +49,7 @@ async function run() {
     // Page 2: Booking Badminton Courts
     await page.goto('https://mysafra.safra.sg/web/modules/BookingCalendar2/FacilityBookingSearch.aspx?ID=c6nEfGCq%2fR5CD94dd1GGK7sHZ%2fSyelV9A7BeRWD56FYmhJ%2fOy27f%2fw%3d%3d&TYPE=6qcJUPfjf6uL9fvUM2P6EU6zuO3eTG4rSVUGze9uZDOCsB73iL%2fsgiM2nihPlVjv%2fte9Ye%2fkH2aGF0jD8MVpug%3d%3d&')
     
-    await page.select(FACILITY_SELECTOR, CONFIG.TAMPINES);
+    await page.select(FACILITY_SELECTOR, CONFIG.MOUNT_FABER);
     await page.waitForTimeout(2000)
     await page.$eval(DATE_SELECTOR, (el, TARGET_DATE) => el.value = TARGET_DATE, TARGET_DATE);
     await page.click(SEARCH_AVAILABILITY_SELECTOR);
@@ -76,6 +78,7 @@ async function run() {
         }
       )
       if (courtSlots.length > 0) slots[court] = courtSlots
+      else slots[court] = []
     }
 
     for (const court of courts) {
